@@ -1,37 +1,91 @@
 import styled from "@emotion/styled";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import SearchIcon from "@mui/icons-material/Search";
+import { useRouter } from "next/router";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Navbar = () => {
+  const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const handleLinkClick = () => {
+    setMenuOpen(false);
+  };
+
   return (
-    <div>
+    <Header>
       <NavbarContainer>
-        <Logo>
-          <Rise>RISE</Rise> <Blog>BLOG</Blog>
-        </Logo>
-        <NavLinks>
+        <Link href="/">
+          <Logo>
+            <Rise>RISE</Rise> <Blog>BLOG</Blog>
+          </Logo>
+        </Link>
+
+        <NavLinks open={menuOpen}>
           <li>
-            <Link href="/">Home</Link>
+            <Link href="/" passHref>
+              <NavLink
+                className={router.pathname == "/" ? "active" : ""}
+                onClick={handleLinkClick}
+              >
+                Home
+              </NavLink>
+            </Link>
           </li>
 
           <li>
-            <Link href="/allblogs">Articles</Link>
+            <Link href="/allblogs" passHref>
+              <NavLink
+                className={router.pathname == "/allblogs" ? "active" : ""}
+                onClick={handleLinkClick}
+              >
+                Articles
+              </NavLink>
+            </Link>
           </li>
 
           <li>
-            <Link href="/about">About</Link>
+            <Link href="/about" passHref>
+              <NavLink
+                className={router.pathname == "/about" ? "active" : ""}
+                onClick={handleLinkClick}
+              >
+                About
+              </NavLink>
+            </Link>
           </li>
 
           <li>
-            <Link href="/contact">Contact</Link>
+            <Link href="/contact" passHref>
+              <NavLink
+                className={router.pathname == "/contact" ? "active" : ""}
+                onClick={handleLinkClick}
+              >
+                Contact
+              </NavLink>
+            </Link>
           </li>
 
           <li>
-            <Link href="/">Search </Link>
+            <Link href="/" passHref>
+              <NavLink onClick={handleLinkClick}>
+                <SearchIcon fontSize="small" />
+              </NavLink>
+            </Link>
           </li>
         </NavLinks>
+
+        <HamBurgerMenu onClick={toggleMenu}>
+          {menuOpen ? <CloseIcon /> : <MenuIcon />}
+        </HamBurgerMenu>
       </NavbarContainer>
-    </div>
+    </Header>
   );
 };
 
@@ -40,7 +94,6 @@ export default Navbar;
 const NavbarContainer = styled.div`
   width: 100%;
   height: 66px;
-  padding: 0px 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -48,6 +101,7 @@ const NavbarContainer = styled.div`
 
 const Logo = styled.div`
   display: flex;
+  z-index: 1;
 `;
 const Rise = styled.span`
   font-family: "Inter";
@@ -70,8 +124,56 @@ const Blog = styled.span`
 
 const NavLinks = styled.div`
   display: flex;
+
   & li {
     list-style: none;
     margin-left: 28px;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
   }
+  & a.active {
+    color: #3652e1;
+  }
+  @media (max-width: 800px) {
+    flex-direction: column;
+    display: ${({ open }) => (open ? "flex" : "none")};
+    align-items: center;
+    position: absolute;
+    top:50px;
+    left: 0;
+    width: 100%;
+    height:100%
+    padding: 0 20px;
+    background-color: #fff;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+
+    & li {
+      margin-top: 20px;
+      margin-left: 0;
+    }
+  }
+`;
+
+const NavLink = styled.a`
+  color: black;
+`;
+
+const Header = styled.div`
+  padding: 0px 8%;
+`;
+const HamBurgerMenu = styled.div`
+  display: none;
+  @media (width<800px) {
+    display: block;
+    z-index: 5;
+  }
+`;
+const MenuBar = styled.div`
+  position: absolute;
+  right: 8%;
+  top: 3.4%;
 `;
