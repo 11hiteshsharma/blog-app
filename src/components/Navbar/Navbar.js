@@ -1,11 +1,10 @@
 import styled from "@emotion/styled";
 import Link from "next/link";
 import React, { useState } from "react";
-import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-
+import { Search } from "@mui/icons-material";
 const Navbar = () => {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -75,7 +74,7 @@ const Navbar = () => {
           <li>
             <Link href="/" passHref>
               <NavLink onClick={handleLinkClick}>
-                <SearchIcon fontSize="small" />
+                <Search fontSize="small" />
               </NavLink>
             </Link>
           </li>
